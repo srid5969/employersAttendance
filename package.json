@@ -1,10 +1,10 @@
 {
   "name": "nodemailer",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "app.js",
   "scripts": {
     "start": "nodemon src/app.ts",
-    "build": "npm run clean && tsc ",
+    "build": "npm run clean && tsc",
     "clean": "shx rm -rf build",
     "dev": "ts-node ./src/app.ts",
     "start:dev": "ts-node-dev --watch --respawn --pretty --transpile-only ./src/app.ts",

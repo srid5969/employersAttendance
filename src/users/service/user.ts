@@ -1,13 +1,8 @@
-import {
-  BadRequestException,
-  ConflictException,
-  inject,
-  injectable,
-} from "@leapjs/common";
+import { BadRequestException, ConflictException, inject, injectable } from "@leapjs/common";
 import bcrypt from "bcrypt";
-import { AuthService } from "./../../../src/common/services/auth";
+import { TokenModel } from "../../usersToken/model/usersToken";
 import { User, UserModel } from "../model/User";
-import { TokenModel, UsersToken } from "../../usersToken/model/usersToken";
+import { AuthService } from "./../../../src/common/services/auth";
 
 @injectable()
 export class UserService {

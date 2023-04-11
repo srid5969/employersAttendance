@@ -4,13 +4,7 @@ import { IsDefined, IsEnum } from "class-validator";
 import { ObjectId } from "mongodb";
 import { INVALID_NAME } from "./../../resources/strings/app/role";
 import { Roles } from "../../common/constants";
-import {
-  EMPTY_EMAIL,
-  EMPTY_EMPLOYEE_ID,
-  EMPTY_GENDER,
-  EMPTY_PASSWORD,
-  EMPTY_PHONE,
-} from "./../../resources/strings/app/auth";
+import { EMPTY_EMAIL,  EMPTY_EMPLOYEE_ID,  EMPTY_GENDER,  EMPTY_PASSWORD,  EMPTY_PHONE,} from "./../../resources/strings/app/auth";
 import { EMPTY_FIRST_NAME } from "./../../resources/strings/app/user";
 
 @index({ email: 1, phone: 1 }, { unique: true })
@@ -22,12 +16,13 @@ class User {
 
   @prop({ required: true })
   @IsDefined({ groups: ["create"], message: EMPTY_FIRST_NAME })
-  public name?: string; @prop({ required: true })
+  public name?: string;
 
+  @prop({ required: true, unique: true })
   @IsDefined({ groups: ["create"], message: EMPTY_EMAIL })
   public email?: string;
 
-  @prop({ required: true, allowMixed: 0 })
+  @prop({ required: true, unique: true })
   @IsDefined({ groups: ["create"], message: EMPTY_PHONE })
   public phone!: number;
 

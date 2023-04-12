@@ -4,10 +4,16 @@ import { IsDefined, IsEnum } from "class-validator";
 import { ObjectId } from "mongodb";
 import { INVALID_NAME } from "./../../resources/strings/app/role";
 import { Roles } from "../../common/constants";
-import { EMPTY_EMAIL,  EMPTY_EMPLOYEE_ID,  EMPTY_GENDER,  EMPTY_PASSWORD,  EMPTY_PHONE,} from "./../../resources/strings/app/auth";
+import {
+  EMPTY_EMAIL,
+  EMPTY_EMPLOYEE_ID,
+  EMPTY_GENDER,
+  EMPTY_PASSWORD,
+  EMPTY_PHONE,
+} from "./../../resources/strings/app/auth";
 import { EMPTY_FIRST_NAME } from "./../../resources/strings/app/user";
 
-@index({ email: 1, phone: 1 }, { unique: true })
+@index({ email: 1, phone: 1, empId: 1 }, { unique: true })
 @post("save", mongoErrorHandler("users"))
 @post("findOneAndUpdate", mongoErrorHandler("users"))
 class User {
@@ -34,7 +40,7 @@ class User {
   @IsEnum(Roles, { groups: ["create", "update"], message: INVALID_NAME })
   public role!: string;
 
-  @prop({ required: true })
+  @prop({ required: true,unique: true  })
   @IsDefined({ groups: ["create"], message: EMPTY_EMPLOYEE_ID })
   public empId?: string;
 

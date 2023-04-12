@@ -1,4 +1,9 @@
-import { BadRequestException, ConflictException, inject, injectable } from "@leapjs/common";
+import {
+  BadRequestException,
+  ConflictException,
+  inject,
+  injectable,
+} from "@leapjs/common";
 import bcrypt from "bcrypt";
 import { TokenModel } from "../../userSession/model/usersToken";
 import { User, UserModel } from "../model/User";
@@ -15,10 +20,19 @@ export class UserService {
         data.password = await bcrypt.hash(data.password, salt);
         const saveUser = await new UserModel(data).save();
         resolve(saveUser);
-      } catch (error) {
-        console.log(error);
+      } catch (error: any) {
+        let message: any = null || [];
 
-        reject({ statusCode: 403, message: error });
+        if (error.keyPattern.email) {
+          message.push("Email already registered");
+        }
+        if (error.keyPattern.phone) {
+          message.push("Phone Number already registered");
+        }
+        if (error.keyPattern.empId) {
+          message.push("Employee id already registered");
+        }
+        reject({ message: message || error });
       }
     });
   }
@@ -56,8 +70,8 @@ export class UserService {
           const saveToken = await new TokenModel({
             user: data._id,
             token: token,
-          }).save()//.populate({path:"user"})
-          saveToken.user=data
+          }).save(); //.populate({path:"user"})
+          saveToken.user = data;
           return resolve(saveToken);
         } else {
           resolve(

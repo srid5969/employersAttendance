@@ -32,7 +32,7 @@ export class UserController {
           return resolve(res.status(HttpStatus.OK).send(result));
         })
         .catch((err) => {
-          return resolve(res.status(HttpStatus.CONFLICT).json(err));
+          return resolve(res.status(HttpStatus.NOT_ACCEPTABLE).json(err));
         });
     });
   }

@@ -12,14 +12,15 @@ class UsersToken {
   public user!: Ref<User> | ObjectId;
 
   @prop()
+  @IsDefined({ groups: ["create"] })
   public token!: string;
 }
 
 const TokenModel = getModelForClass(UsersToken, {
   schemaOptions: {
-    collection: "usersToken",
+    collection: "session",
     versionKey: false,
-    timestamps: { createdAt: "createdAt" }
+    timestamps: { createdAt: "createdAt" },
   },
 });
 export { UsersToken, TokenModel };

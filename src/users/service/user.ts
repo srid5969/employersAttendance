@@ -1,6 +1,6 @@
 import { BadRequestException, ConflictException, inject, injectable } from "@leapjs/common";
 import bcrypt from "bcrypt";
-import { TokenModel } from "../../usersToken/model/usersToken";
+import { TokenModel } from "../../userSession/model/usersToken";
 import { User, UserModel } from "../model/User";
 import { AuthService } from "./../../../src/common/services/auth";
 

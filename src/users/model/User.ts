@@ -1,9 +1,9 @@
 import { mongoErrorHandler } from "@leapjs/common";
 import { getModelForClass, index, post, prop } from "@typegoose/typegoose";
-import { IsDefined, IsEnum } from "class-validator";
+import { IsDefined, IsEmail, IsEnum } from "class-validator";
 import { ObjectId } from "mongodb";
-import { INVALID_NAME } from "./../../resources/strings/app/role";
-import { Roles } from "../../common/constants";
+import { INVALID_GENDER, INVALID_NAME } from "./../../resources/strings/app/role";
+import { Gender, Roles } from "../../common/constants";
 import {
   EMPTY_EMAIL,
   EMPTY_EMPLOYEE_ID,
@@ -11,7 +11,11 @@ import {
   EMPTY_PASSWORD,
   EMPTY_PHONE,
 } from "./../../resources/strings/app/auth";
-import { EMPTY_FIRST_NAME } from "./../../resources/strings/app/user";
+import {
+  EMPTY_FIRST_NAME,
+  INVALID_EMAIL,
+} from "./../../resources/strings/app/user";
+import { Expose } from "class-transformer";
 
 @index({ email: 1, phone: 1, empId: 1 }, { unique: true })
 @post("save", mongoErrorHandler("users"))
@@ -26,6 +30,7 @@ class User {
 
   @prop({ required: true, unique: true })
   @IsDefined({ groups: ["create"], message: EMPTY_EMAIL })
+  @IsEmail({}, { always: true, message: INVALID_EMAIL })
   public email?: string;
 
   @prop({ required: true, unique: true })
@@ -37,18 +42,20 @@ class User {
   public password!: string;
 
   @prop({ required: true, default: Roles.Employee })
+  @Expose({ groups: ["admin"] })
   @IsEnum(Roles, { groups: ["create", "update"], message: INVALID_NAME })
   public role!: string;
 
-  @prop({ required: true,unique: true  })
+  @prop({ required: true, unique: true })
   @IsDefined({ groups: ["create"], message: EMPTY_EMPLOYEE_ID })
   public empId?: string;
 
   @prop({ required: true, default: true })
   public active!: boolean;
 
-  @prop({ required: true })
+  @prop({ required: true, enum: ["Male", "Female"] })
   @IsDefined({ groups: ["create"], message: EMPTY_GENDER })
+  @IsEnum(Gender, { groups: ["create", "update"], message: INVALID_GENDER })
   public gender!: string;
 
   @prop({ required: true })

@@ -18,7 +18,7 @@ class UsersToken {
 
 const TokenModel = getModelForClass(UsersToken, {
   schemaOptions: {
-    collection: "session",
+    collection: "userSession",
     versionKey: false,
     timestamps: { createdAt: "createdAt" },
   },

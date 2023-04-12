@@ -6,6 +6,7 @@ import { mongoose } from "@typegoose/typegoose";
 import { json } from "express-mung";
 import helmet from "helmet";
 import "reflect-metadata";
+import { AttendanceController } from "./attendance/controller/attendanceController";
 import ErrorHandler from "./common/Handle-Error/error-handler";
 import { configurations } from "./common/manager/config";
 import { UserController } from "./users/controller/UserController";
@@ -27,7 +28,7 @@ const server = application.create(new ExpressAdapter(), {
     credentials: true,
   },
   beforeMiddlewares: [ helmet(), json(acFilterAttributes)],
-  controllers: [UserController],
+  controllers: [UserController,AttendanceController],
   afterMiddlewares: [ErrorHandler],
 });
 

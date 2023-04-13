@@ -1,11 +1,5 @@
 import { Middleware } from '@leapjs/router';
-import {
-  HttpException,
-  BadRequestException,
-  HttpStatus,
-  Logger,
-  inject,
-} from '@leapjs/common';
+import { HttpException, BadRequestException, HttpStatus, Logger, inject } from '@leapjs/common';
 
 @Middleware()
 class ErrorHandler {
@@ -32,9 +26,7 @@ class ErrorHandler {
       res.status(error.status).send({ errors: { messages: error.errors } });
     } else {
       this.logger.error(error.message, error.stack, 'ErrorHandler');
-      res
-        .status(error.status ? error.status : HttpStatus.INTERNAL_SERVER_ERROR)
-        .send({ errors: { messages: [error.message] } });
+      res.status(error.status ? error.status : HttpStatus.INTERNAL_SERVER_ERROR).send({ errors: { messages: [error.message] } });
     }
   }
 }

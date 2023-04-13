@@ -1,6 +1,6 @@
 enum validEnvironments {
-  development = "development",
-  production = "production",
+  development = 'development',
+  production = 'production'
 }
 
 const logLevels: {
@@ -11,22 +11,22 @@ const logLevels: {
   info: 30,
   warn: 40,
   error: 50,
-  fatal: 60,
+  fatal: 60
 };
 
 enum UserStatus {
   NOT_VERIFIED = 0,
   VERIFIED = 1,
-  RESET_PASSWORD_ON_LOGIN = 2,
+  RESET_PASSWORD_ON_LOGIN = 2
 }
 
 enum Roles {
-  Admin = "Admin",
-  Employee = "Employee",
+  Admin = 'Admin',
+  Employee = 'Employee'
 }
 enum Gender {
-  Male = "Male",
-  Female = "Female",
+  Male = 'Male',
+  Female = 'Female'
 }
 
-export { validEnvironments, logLevels, UserStatus, Roles ,Gender};
+export { validEnvironments, logLevels, UserStatus, Roles, Gender };

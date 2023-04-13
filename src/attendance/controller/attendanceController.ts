@@ -16,7 +16,7 @@ export class AttendanceController {
   }
 
   @Post("/")
-  @UseBefore(validate(Attendance, [""]))
+  @UseBefore(validate(Attendance, ["checkIn"]))
   public async checkInTimeAttendance(@Body() req: any, @Res() res: Response): Promise<Response> {
     let data = req
     return res.send(data)

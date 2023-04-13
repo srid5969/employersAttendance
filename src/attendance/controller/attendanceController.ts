@@ -6,6 +6,7 @@ import { Attendance } from "../model/attendance";
 import { AttendanceService } from "../service/attendanceService";
 
 @Controller("/attendance")
+
 export class AttendanceController {
   @inject(AttendanceService)
   private readonly attendanceService!: AttendanceService

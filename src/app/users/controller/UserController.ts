@@ -1,21 +1,27 @@
-import { Request, Response } from 'express';
-import { UserService } from '../service/user';
-import { Body, Controller, Post, Req, Res, UseBefore } from '@leapjs/router';
-import { HttpStatus, inject } from '@leapjs/common';
-import { User } from '../model/User';
-import validate from '../../../common/middleware/validator';
+import { Request, Response } from "express";
+import { UserService } from "../service/user";
+import { Body, Controller, Get, Post, Req, Res, UseBefore } from "@leapjs/router";
+import { HttpStatus, inject } from "@leapjs/common";
+import { User } from "../model/User";
+import validate from "../../../common/middleware/validator";
+import Authentication from "./../../../common/middleware/auth";
 
-@Controller('/user')
+@Controller("/user")
 export class UserController {
   @inject(() => UserService) userService!: UserService;
 
-  @Post('/login')
+  @Post("/login")
   public async login(@Body() req: any, @Res() res: Response): Promise<Response> {
     return res.send(await this.userService.login(req.phone, req.password));
   }
+  @Get("/users")
+  @UseBefore(Authentication)
+  public async getRequest(@Req() req: Request, @Res() res: Response): Promise<Response> {
+    return res.send("Hello world");
+  }
 
-  @Post('/signup')
-  @UseBefore(validate(User, ['create']))
+  @Post("/signup")
+  @UseBefore(validate(User, ["create"]))
   public async signUp(@Req() req: Request, @Res() res: Response): Promise<Response> {
     return new Promise<Response>(resolve => {
       const data: User = req.body;

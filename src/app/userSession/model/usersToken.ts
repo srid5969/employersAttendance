@@ -1,7 +1,7 @@
 import { getModelForClass, index, prop, Ref } from "@typegoose/typegoose";
+import { User } from "./../../../app/users/model/User";
 import { IsDefined } from "class-validator";
 import { ObjectId } from "mongodb";
-import { User } from "../../app/users/model/User";
 @index({ id: 1 }, { expires: "365" })
 class UsersToken {
   @prop()
@@ -20,7 +20,7 @@ const TokenModel = getModelForClass(UsersToken, {
   schemaOptions: {
     collection: "userSession",
     versionKey: false,
-    timestamps: { createdAt: "createdAt" },
-  },
+    timestamps: { createdAt: "createdAt" }
+  }
 });
 export { UsersToken, TokenModel };

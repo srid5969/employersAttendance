@@ -1,29 +1,25 @@
-import { Response, NextFunction } from 'express';
-import { UnauthorizedException } from '@leapjs/common';
-import { Middleware } from '@leapjs/router';
-import passport from 'passport';
-import { AUTH_TOKEN_INVALID, AUTH_TOKEN_EMPTY, AUTH_TOKEN_EXPIRED } from 'resources/strings/middleware/authentication';
+import { Middleware } from "@leapjs/router";
+import { NextFunction, Response } from "express";
+import { TokenModel } from "./../../app/userSession/model/usersToken";
+import { AUTH_TOKEN_INVALID } from "./../../resources/strings/middleware/authentication";
 
 @Middleware()
 class Authentication {
   public before(req: any, res: Response, next: NextFunction): any {
-    return passport.authenticate('jwt', { session: false }, (error: Error, decodedToken: any, info: any): any => {
-      if (error) {
-        return next(new UnauthorizedException(error.message));
-      }
-      if (!decodedToken) {
-        let message = AUTH_TOKEN_INVALID;
-        if (info !== undefined && info.message === 'No auth token') {
-          message = AUTH_TOKEN_EMPTY;
-        }
-        if (info !== undefined && info.message === 'jwt expired') {
-          message = AUTH_TOKEN_EXPIRED;
-        }
-        return next(new UnauthorizedException(message));
-      }
-      req.decodedToken = decodedToken;
-      return next();
-    })(req, res, next);
+    if (!req.headers.authorization) {
+      return res.status(404).json({ message: "Token Not Found" });
+    }
+
+    let token: any = req.headers.authorization.split(" ") || "";
+    if (token[1]) {
+       const data= TokenModel.findOne({token:token[1]})
+       if(data){
+        return next()
+       }
+       res.json({message:AUTH_TOKEN_INVALID})
+    } else {
+      return res.status(404).json({ message: "Bearer Token Not Found" });
+    }
   }
 }
 

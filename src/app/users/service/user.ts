@@ -1,8 +1,8 @@
-import { BadRequestException, ConflictException, inject, injectable } from '@leapjs/common';
-import bcrypt from 'bcrypt';
-import { TokenModel } from './../../userSession/model/usersToken';
-import { User, UserModel } from '../model/User';
-import { AuthService } from '../../../common/services/auth';
+import { BadRequestException, ConflictException, inject, injectable } from "@leapjs/common";
+import bcrypt from "bcrypt";
+import { TokenModel } from "./../../userSession/model/usersToken";
+import { User, UserModel } from "../model/User";
+import { AuthService } from "../../../common/services/auth";
 
 @injectable()
 export class UserService {
@@ -19,13 +19,13 @@ export class UserService {
         let message: any = null || [];
 
         if (error.keyPattern.email) {
-          message.push('Email already registered');
+          message.push("Email already registered");
         }
         if (error.keyPattern.phone) {
-          message.push('Phone Number already registered');
+          message.push("Phone Number already registered");
         }
         if (error.keyPattern.empId) {
-          message.push('Employee id already registered');
+          message.push("Employee id already registered");
         }
         reject({ message: message || error });
       }
@@ -38,8 +38,8 @@ export class UserService {
     return new Promise<any>(async resolve => {
       if (!(phone && plainPassword)) {
         return resolve(
-          new ConflictException('please enter phone number and password', {
-            name: 'no_phone_or_password',
+          new ConflictException("please enter phone number and password", {
+            name: "no_phone_or_password",
             code: 404
           })
         );
@@ -65,16 +65,19 @@ export class UserService {
           return resolve(saveToken);
         } else {
           resolve(
-            new BadRequestException('wrong password', {
+            new BadRequestException("wrong password", {
               code: 401,
-              name: 'invalid_password'
+              name: "invalid_password"
             })
           );
         }
       } else {
-        const err = new BadRequestException('Bad Request', { code: 404 });
+        const err = new BadRequestException("Bad Request", { code: 404 });
         resolve(err);
       }
     });
+  }
+  public async getAllUsers() {
+    return UserModel.find({});
   }
 }

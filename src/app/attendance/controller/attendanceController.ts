@@ -1,6 +1,6 @@
 import { inject } from '@leapjs/common';
 import { Body, Controller, Get, Param, Patch, Post, Req, Res, UseBefore } from '@leapjs/router';
-import validate from 'common/middleware/validator';
+import validate from './../../../common/middleware/validator';
 import { Response } from 'express';
 import { Attendance } from '../model/attendance';
 import { AttendanceService } from '../service/attendanceService';
@@ -12,7 +12,7 @@ export class AttendanceController {
 
   @Get('/employee/:id')
   public async getAttendanceOfAEmployee(@Param('id') id: any, @Res() res: Response): Promise<Response> {
-    return this.attendanceService.getAttendanceOfAEmployee(id);
+    return res.send(await this.attendanceService.getAttendanceOfAEmployee(id));
   }
 
   @Post('/checkIn/:id')

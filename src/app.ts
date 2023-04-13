@@ -6,10 +6,10 @@ import { mongoose } from "@typegoose/typegoose";
 import { json } from "express-mung";
 import helmet from "helmet";
 import "reflect-metadata";
-import { AttendanceController } from "./attendance/controller/attendanceController";
+import { AttendanceController } from "./app/attendance/controller/attendanceController";
 import ErrorHandler from "./common/Handle-Error/error-handler";
 import { configurations } from "./common/manager/config";
-import { UserController } from "./users/controller/UserController";
+import { UserController } from "./app/users/controller/UserController";
 
 const port = configurations.port;
 const application: LeapApplication = new LeapApplication();

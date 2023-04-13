@@ -3,7 +3,7 @@ import { UserService } from '../service/user';
 import { Body, Controller, Post, Req, Res, UseBefore } from '@leapjs/router';
 import { HttpStatus, inject } from '@leapjs/common';
 import { User } from '../model/User';
-import validate from '././../../common/middleware/validator';
+import validate from '../../../common/middleware/validator';
 
 @Controller('/user')
 export class UserController {

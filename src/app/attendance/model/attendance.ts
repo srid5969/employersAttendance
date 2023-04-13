@@ -2,7 +2,7 @@ import { getModelForClass, prop, Ref } from '@typegoose/typegoose';
 import { IsDefined } from 'class-validator';
 import { ObjectId } from 'mongodb';
 import { User } from '../../users/model/User';
-import { ENTER_IN_TIME, ENTER_IN_TIME_LOCATION, ENTER_OUT_TIME_LOCATION } from '../../resources/strings/app/attendance';
+import { ENTER_IN_TIME, ENTER_IN_TIME_LOCATION, ENTER_OUT_TIME_LOCATION } from '../../../resources/strings/app/attendance';
 
 export class Location {
   public latitude: any;

@@ -3,6 +3,12 @@ import { Attendance, AttendanceModel as attendance } from "../model/attendance";
 
 @injectable()
 class AttendanceService {
+    public async editAttendance(employee:string,dateString:string,data:Attendance){
+        const date=new Date(dateString)
+        const change=await attendance.findOneAndUpdateOne({date,employee},data)
+        return  await change;
+    }
+
   public async postInTimeAttendance(employee: any, data: any): Promise<any> {
     data.employee = employee;
     const registerAttendance = new attendance(data);

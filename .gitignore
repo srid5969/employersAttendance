@@ -2,3 +2,9 @@ node_modules/
 package-lock.json
 .env
 build/
+.idea/modules.xml
+.idea/UsersManagement.iml
+.idea/codeStyles/codeStyleConfig.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/codeStyles/Project.xml
+.idea/vcs.xml

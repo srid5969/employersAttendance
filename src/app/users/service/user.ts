@@ -8,6 +8,11 @@ import { AuthService } from "../../../common/services/auth";
 export class UserService {
   constructor(@inject(() => AuthService) private readonly authService: AuthService) {}
 
+  public async getUserById(id: any): Promise<User | any> {
+    const data = await UserModel.findOne({ _id: id });
+    return data;
+  }
+
   public async userSignUp(data: User): Promise<User | any> {
     return new Promise<User | any>(async (resolve, reject) => {
       try {

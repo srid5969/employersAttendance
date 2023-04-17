@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { UserService } from "../service/user";
-import { Body, Controller, Get, Post, Req, Res, UseBefore } from "@leapjs/router";
+import { Body, Controller, Get, Param, Post, Req, Res, UseBefore } from "@leapjs/router";
 import { HttpStatus, inject } from "@leapjs/common";
 import { User } from "../model/User";
 import validate from "../../../common/middleware/validator";
@@ -15,10 +15,11 @@ export class UserController {
     const data = await this.userService.login(req.phone, req.password);
     return data.status ? res.status(data.status).json(data) : res.status(HttpStatus.ACCEPTED).send(data);
   }
-  @Get("/users")
+  @Get("/get/:id")
   @UseBefore(Authentication)
-  public async getRequest(@Req() req: Request, @Res() res: Response): Promise<Response> {
-    return res.send("Hello world");
+  public async getUserById(@Param("id") id: string, @Res() res: Response): Promise<Response> {
+    const result =await this.userService.getUserById(id)
+    return res.send(result);
   }
 
   @Post("/signup")
@@ -37,3 +38,5 @@ export class UserController {
     });
   }
 }
+
+

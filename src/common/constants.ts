@@ -1,6 +1,6 @@
 enum validEnvironments {
-  development = 'development',
-  production = 'production'
+  development = "development",
+  production = "production"
 }
 
 const logLevels: {
@@ -21,12 +21,12 @@ enum UserStatus {
 }
 
 enum Roles {
-  Admin = 'Admin',
-  Employee = 'Employee'
+  Admin = "Admin",
+  Employee = "Employee"
 }
 enum Gender {
-  Male = 'Male',
-  Female = 'Female'
+  Male = "Male",
+  Female = "Female"
 }
 
 export { validEnvironments, logLevels, UserStatus, Roles, Gender };

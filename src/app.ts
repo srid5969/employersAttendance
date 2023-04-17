@@ -16,6 +16,8 @@ const application: LeapApplication = new LeapApplication();
 mongoose.connect(configurations.mongodbHostName || "", {
   dbName: configurations.dataBaseName || ""
 });
+
+
 const database = mongoose.connection;
 database.on("error", error => console.error());
 database.once("connected", () => Logger.log(`Connected to the database`, "LeapApplication"));

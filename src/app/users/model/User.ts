@@ -4,17 +4,8 @@ import { IsDefined, IsEmail, IsEnum } from "class-validator";
 import { ObjectId } from "mongodb";
 import { INVALID_GENDER, INVALID_NAME } from "../../../resources/strings/app/role";
 import { Gender, Roles } from "../../../common/constants";
-import {
-  EMPTY_EMAIL,
-  EMPTY_EMPLOYEE_ID,
-  EMPTY_GENDER,
-  EMPTY_PASSWORD,
-  EMPTY_PHONE,
-} from "../../../resources/strings/app/auth";
-import {
-  EMPTY_FIRST_NAME,
-  INVALID_EMAIL,
-} from "../../../resources/strings/app/user";
+import { EMPTY_EMAIL, EMPTY_EMPLOYEE_ID, EMPTY_GENDER, EMPTY_PASSWORD, EMPTY_PHONE } from "../../../resources/strings/app/auth";
+import { EMPTY_FIRST_NAME, INVALID_EMAIL } from "../../../resources/strings/app/user";
 import { Expose } from "class-transformer";
 
 @index({ email: 1, phone: 1, empId: 1 }, { unique: true })
@@ -66,8 +57,8 @@ const UserModel = getModelForClass(User, {
   schemaOptions: {
     collection: "users",
     versionKey: false,
-    timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" },
-  },
+    timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" }
+  }
 });
 
 export { User, UserModel };

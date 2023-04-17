@@ -1,4 +1,4 @@
-import { getModelForClass, prop, Ref } from "@typegoose/typegoose";
+import { getModelForClass, prop, Ref, ReturnModelType } from "@typegoose/typegoose";
 import { IsDefined } from "class-validator";
 import { ObjectId } from "mongodb";
 import { User } from "../../users/model/User";
@@ -16,7 +16,7 @@ class Attendance {
   @prop({ _id: true })
   public id!: ObjectId;
 
-  @prop({ Ref: User })
+  @prop({ Ref: User,required:true })
   public employee!: Ref<User>;
 
   @prop({ default: Date.now() })
@@ -26,25 +26,26 @@ class Attendance {
   @IsDefined({ groups: ["checkIn"], message: ENTER_IN_TIME })
   public checkInTime!: string;
 
-  @prop({ type: Location })
+  @prop({ type: Location,_id: false })
   @IsDefined({ groups: ["checkIn"], message: ENTER_IN_TIME_LOCATION })
   public checkInLocation!: Ref<Location>;
 
-  @prop({ type: Location })
-  @IsDefined({ groups: ["checkOut"], message: ENTER_IN_TIME_LOCATION })
+  @prop({ type: Location,_id: false  })
+  @IsDefined({ groups: ["checkOut"], message: ENTER_OUT_TIME_LOCATION })
   public checkOutLocation!: Ref<Location>;
 
   @prop({})
   @IsDefined({ groups: ["checkOut"], message: ENTER_OUT_TIME })
-  public checkOutTime!: Date;
+  public checkOutTime!: string;
 }
 
-const AttendanceModel = getModelForClass(Attendance, {
+const AttendanceModel :ReturnModelType<typeof Attendance,any>= getModelForClass(Attendance, {
   schemaOptions: {
     collection: "attendance",
     versionKey: false,
     timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" }
   }
 });
+
 
 export { Attendance, AttendanceModel };

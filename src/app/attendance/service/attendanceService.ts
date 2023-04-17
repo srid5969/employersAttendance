@@ -10,14 +10,18 @@ class AttendanceService {
   }
 
   public async postInTimeAttendance(employee: any, data: any): Promise<any> {
-    data.employee = employee;
-    const registerAttendance = new attendance(data);
-    const saveData = (await registerAttendance.save()) as Attendance;
-    return saveData;
+    try {
+      data.employee = employee;
+      const registerAttendance = new attendance(data);
+      const saveData = (await registerAttendance.save()) as Attendance;
+      return saveData;
+    } catch (error) {
+      return error;
+    }
   }
 
   public async postOutTimeAttendance(employee: any, data: any): Promise<any> {
-    const updateAttendance = await attendance.updateOne({ employee }, { data });
+    const updateAttendance = await attendance.findOneAndUpdateOne({ employee }, data );
     return updateAttendance;
   }
 

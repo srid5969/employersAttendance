@@ -18,14 +18,14 @@ export class AttendanceController {
   @Post("/checkIn/:id")
   @UseBefore(validate(Attendance, ["checkIn"]))
   public async checkInTimeAttendance(@Param("id") id: any, @Body() req: any, @Res() res: Response): Promise<Response> {
-    let data = this.attendanceService.postInTimeAttendance(req.employeeId, req);
+    let data = await this.attendanceService.postInTimeAttendance(id, req);
     return res.send(data);
   }
 
   @Post("/checkOut/:id")
   @UseBefore(validate(Attendance, ["checkOut"]))
   public async checkOutTimeAttendance(@Param("id") id: any, @Body() req: any, @Res() res: Response): Promise<Response> {
-    let data = this.attendanceService.postOutTimeAttendance(req.employeeId, req);
+    let data =await this.attendanceService.postOutTimeAttendance(req.employeeId, req);
     return res.send(data);
   }
 

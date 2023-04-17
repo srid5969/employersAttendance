@@ -12,7 +12,8 @@ export class UserController {
 
   @Post("/login")
   public async login(@Body() req: any, @Res() res: Response): Promise<Response> {
-    return res.send(await this.userService.login(req.phone, req.password));
+    const data = await this.userService.login(req.phone, req.password);
+    return data.status ? res.status(data.status).json(data) : res.status(HttpStatus.ACCEPTED).send(data);
   }
   @Get("/users")
   @UseBefore(Authentication)

@@ -21,6 +21,7 @@ function parse(errors: any): any {
 function validate(classType: any, groups?: string[]): RequestHandler {
   const validator = new ModelValidator();
   return (req: Request, res: Response, next: NextFunction): void => {
+    
     const input: any = plainToClass(classType, req.body);
     validator
       .validate(input, {

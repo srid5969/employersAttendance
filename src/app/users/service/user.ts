@@ -6,7 +6,7 @@ import { AuthService } from "../../../common/services/auth";
 
 @injectable()
 export class UserService {
-  constructor(@inject(AuthService) private readonly authService: AuthService) {}
+  constructor(@inject(() => AuthService) private readonly authService: AuthService) {}
 
   public async userSignUp(data: User): Promise<User | any> {
     return new Promise<User | any>(async (resolve, reject) => {

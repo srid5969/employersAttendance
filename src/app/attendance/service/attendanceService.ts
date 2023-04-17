@@ -35,7 +35,7 @@ class AttendanceService {
   public async getAttendanceByFromDateAndToDate(fromString: string = "02/09/2001", toString: string = "02/09/2001") {
     const from = new Date(fromString).toISOString();
     const to = new Date(toString).toISOString();
-    const result = await attendance.find({ date: { $gte: { from }, $lte: { to } } });
+    const result = await attendance.find({ date: { $gte: from, $lte: to } });
     return result;
   }
 }

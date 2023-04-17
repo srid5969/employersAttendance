@@ -34,10 +34,6 @@ export class AttendanceController {
     return res.send("");
   }
 
-  @Patch("/")
-  public async editAttendance(@Req() req: Request, @Res() res: Response): Promise<Response> {
-    return res.send("");
-  }
 
   @Get("/date/:date")
   public async getAttendanceByDate(@Param("date") date: any, @Res() res: Response): Promise<Response> {
@@ -45,14 +41,14 @@ export class AttendanceController {
     return res.send(result);
   }
 
-  @Get("/users")
+  @Get("/all/")
   public async getAttendanceByFromDateAndToDate(@QueryParam("from") from: any, @QueryParam("to") to: any, @Res() res: Response): Promise<Response> {
     const data = await this.attendanceService.getAttendanceByFromDateAndToDate(from, to);
     return res.send(data);
   }
 
-  @Patch("/edit")
-  public async getRequest(@QueryParam("id") id: any, @QueryParam("date") date: any, @Body() req: any, @Res() res: Response): Promise<Response> {
+  @Patch("/")
+  public async editAttendance(@QueryParam("id") id: any, @QueryParam("date") date: any, @Body() req: any, @Res() res: Response): Promise<Response> {
     const data = await this.attendanceService.editAttendance(id, date, req);
     return res.send(data);
   }

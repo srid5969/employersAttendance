@@ -1,8 +1,9 @@
-import { BadRequestException, ConflictException, inject, injectable } from "@leapjs/common";
+import { HttpStatus, inject, injectable } from "@leapjs/common";
 import bcrypt from "bcrypt";
-import { TokenModel } from "./../../userSession/model/usersToken";
-import { User, UserModel } from "../model/User";
+import { ResponseReturnType } from "common/response/responce.type";
 import { AuthService } from "../../../common/services/auth";
+import { User, UserModel } from "../model/User";
+import { TokenModel } from "./../../userSession/model/usersToken";
 
 @injectable()
 export class UserService {
@@ -13,7 +14,7 @@ export class UserService {
     return data;
   }
 
-  public async userSignUp(data: User): Promise<User | any> {
+  public async userSignUp(data: User): Promise<ResponseReturnType> {
     return new Promise<User | any>(async (resolve, reject) => {
       try {
         const salt = await bcrypt.genSalt(10);
@@ -40,14 +41,16 @@ export class UserService {
    * login
    */
   public async login(phone: number, plainPassword: string) {
-    return new Promise<any>(async resolve => {
+    return new Promise<ResponseReturnType>(async resolve => {
       if (!(phone && plainPassword)) {
-        return resolve(
-          new ConflictException("please enter phone number and password", {
-            name: "no_phone_or_password",
-            code: 404
-          })
-        );
+        const res: ResponseReturnType = {
+          code: 404,
+          message: "please enter phone number and password",
+          data: "",
+          error: "please enter phone number and password",
+          status: false
+        };
+        return resolve(res);
       }
       const data: any | User = await UserModel.findOne({ phone: phone }, { password: 1 });
 
@@ -67,18 +70,33 @@ export class UserService {
             token: token
           }).save(); //.populate({path:"user"})
           saveToken.user = data;
-          return resolve(saveToken);
+          const res: ResponseReturnType = {
+            code: HttpStatus.ACCEPTED,
+            data: saveToken,
+            error: null,
+            message: "Success",
+            status: false
+          };
+          return resolve(res);
         } else {
-          resolve(
-            new BadRequestException("wrong password", {
-              code: 401,
-              name: "invalid_password"
-            })
-          );
+          const res: ResponseReturnType = {
+            code: HttpStatus.CONFLICT,
+            data: null,
+            error: "invalid_password",
+            message: "invalid_password",
+            status: false
+          };
+          return resolve(res);
         }
       } else {
-        const err = new BadRequestException("Bad Request", { code: 404 });
-        resolve(err);
+        const res: ResponseReturnType = {
+          code: HttpStatus.CONFLICT,
+          data: null,
+          error: "Bad Request",
+          message: "Bad Request",
+          status: false
+        };
+        return resolve(res);
       }
     });
   }

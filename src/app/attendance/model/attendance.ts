@@ -20,7 +20,7 @@ class Attendance {
   public employee!: Ref<User>;
 
   @prop({ default: Date.now() })
-  public date!: Date;
+  public date!: string;
 
   @prop({ default: Date.now() })
   @IsDefined({ groups: ["checkIn"], message: ENTER_IN_TIME })

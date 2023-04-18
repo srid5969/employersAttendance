@@ -12,13 +12,17 @@ export class UserController {
 
   @Post("/login")
   public async login(@Body() req: any, @Res() res: Response): Promise<Response> {
-    const data = await this.userService.login(req.phone, req.password);
-    return data.status ? res.status(data.status).json(data) : res.status(HttpStatus.ACCEPTED).send(data);
+    try {
+      const data = await this.userService.login(req.phone, req.password);
+      return data.status ? res.status(data.status).json(data) : res.status(HttpStatus.ACCEPTED).send(data);
+    } catch (error: any) {
+      return error.status ? res.status(error.status).json(error) : res.status(HttpStatus.CONFLICT).send(error);
+    }
   }
   @Get("/get/:id")
   @UseBefore(Authentication)
   public async getUserById(@Param("id") id: string, @Res() res: Response): Promise<Response> {
-    const result =await this.userService.getUserById(id)
+    const result = await this.userService.getUserById(id);
     return res.send(result);
   }
 
@@ -38,5 +42,3 @@ export class UserController {
     });
   }
 }
-
-

@@ -8,7 +8,7 @@ import { json } from "express-mung";
 import helmet from "helmet";
 import { AttendanceController } from "./app/attendance/controller/attendanceController";
 import ErrorHandler from "./common/Handle-Error/error-handler";
-import { configurations } from "./common/manager/config";
+import { configurations } from "./configuration/maanger";
 import { UserController } from "./app/users/controller/UserController";
 
 const port = configurations.port;

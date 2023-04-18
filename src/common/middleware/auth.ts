@@ -7,18 +7,18 @@ import { AUTH_TOKEN_INVALID } from "./../../resources/strings/middleware/authent
 class Authentication {
   public before(req: any, res: Response, next: NextFunction): any {
     if (!req.headers.authorization) {
-      return res.status(404).json({ message: "Token Not Found" });
+      return res.status(404).json({ message: "Token Not Found", status: "Failed" });
     }
 
     let token: any = req.headers.authorization.split(" ") || "";
     if (token[1]) {
-       const data= TokenModel.findOne({token:token[1]})
-       if(data){
-        return next()
-       }
-       res.json({message:AUTH_TOKEN_INVALID})
+      const data = TokenModel.findOne({ token: token[1] });
+      if (data) {
+        return next();
+      }
+      res.json({ message: AUTH_TOKEN_INVALID });
     } else {
-      return res.status(404).json({ message: "Bearer Token Not Found" });
+      return res.status(404).json({ message: "Bearer Token Not Found", status: "Failed" });
     }
   }
 }

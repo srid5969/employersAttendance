@@ -9,3 +9,8 @@ export interface ResponseReturnType {
 
   error: any;
 }
+
+export enum ResponseMessage{
+    Success="Success",
+    Failed="Failed"
+}

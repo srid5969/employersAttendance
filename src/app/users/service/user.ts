@@ -1,6 +1,6 @@
 import { HttpStatus, inject, injectable } from "@leapjs/common";
 import bcrypt from "bcrypt";
-import { ResponseReturnType } from "common/response/response.type";
+import { ResponseMessage, ResponseReturnType } from "../../../common/response/response.type";
 import { AuthService } from "../../../common/services/auth";
 import { User, UserModel } from "../model/User";
 import { TokenModel } from "./../../userSession/model/usersToken";
@@ -9,31 +9,38 @@ import { TokenModel } from "./../../userSession/model/usersToken";
 export class UserService {
   constructor(@inject(() => AuthService) private readonly authService: AuthService) {}
 
-  public async getUserById(id: any): Promise<User | any> {
+  public async getUserById(id: any): Promise<ResponseReturnType> {
     const data = await UserModel.findOne({ _id: id });
-    return data;
+    return {
+      code: HttpStatus.ACCEPTED,
+      message: ResponseMessage.Success,
+      data,
+      error: null,
+      status: true
+    };
   }
 
   public async userSignUp(data: User): Promise<ResponseReturnType> {
-    return new Promise<User | any>(async (resolve, reject) => {
+    return new Promise<ResponseReturnType>(async (resolve, reject) => {
       try {
         const salt = await bcrypt.genSalt(10);
         data.password = await bcrypt.hash(data.password, salt);
         const saveUser = await new UserModel(data).save();
-        resolve(saveUser);
+        return resolve({
+          code: HttpStatus.ACCEPTED,
+          message: ResponseMessage.Success,
+          data: saveUser,
+          error: null,
+          status: true
+        });
       } catch (error: any) {
-        let message: any = null || [];
-
-        if (error.keyPattern.email) {
-          message.push("Email already registered");
-        }
-        if (error.keyPattern.phone) {
-          message.push("Phone Number already registered");
-        }
-        if (error.keyPattern.empId) {
-          message.push("Employee id already registered");
-        }
-        reject({ message: message || error });
+        return reject({
+          code: error.status || HttpStatus.CONFLICT,
+          message: ResponseMessage.Failed,
+          data: null,
+          error,
+          status: false
+        });
       }
     });
   }

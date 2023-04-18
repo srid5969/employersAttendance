@@ -16,7 +16,7 @@ class Attendance {
   @prop({ _id: true })
   public id!: ObjectId;
 
-  @prop({ Ref: User,required:true })
+  @prop({ Ref: User, required: true })
   public employee!: Ref<User>;
 
   @prop({ default: Date.now() })
@@ -26,11 +26,11 @@ class Attendance {
   @IsDefined({ groups: ["checkIn"], message: ENTER_IN_TIME })
   public checkInTime!: string;
 
-  @prop({ type: Location,_id: false })
+  @prop({ type: Location, _id: false })
   @IsDefined({ groups: ["checkIn"], message: ENTER_IN_TIME_LOCATION })
   public checkInLocation!: Ref<Location>;
 
-  @prop({ type: Location,_id: false  })
+  @prop({ type: Location, _id: false })
   @IsDefined({ groups: ["checkOut"], message: ENTER_OUT_TIME_LOCATION })
   public checkOutLocation!: Ref<Location>;
 
@@ -39,13 +39,12 @@ class Attendance {
   public checkOutTime!: string;
 }
 
-const AttendanceModel :ReturnModelType<typeof Attendance,any>= getModelForClass(Attendance, {
+const AttendanceModel: ReturnModelType<typeof Attendance, any> = getModelForClass(Attendance, {
   schemaOptions: {
     collection: "attendance",
     versionKey: false,
     timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" }
   }
 });
-
 
 export { Attendance, AttendanceModel };

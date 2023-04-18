@@ -5,6 +5,7 @@ import { HttpStatus, inject } from "@leapjs/common";
 import { User } from "../model/User";
 import validate from "../../../common/middleware/validator";
 import Authentication from "./../../../common/middleware/auth";
+import { ResponseReturnType } from "common/response/responce.type";
 
 @Controller("/user")
 export class UserController {
@@ -33,11 +34,11 @@ export class UserController {
       const data: User = req.body;
       return this.userService
         .userSignUp(data)
-        .then(result => {
+        .then((result: ResponseReturnType) => {
           return resolve(res.status(HttpStatus.OK).send(result));
         })
-        .catch(err => {
-          return resolve(res.status(HttpStatus.NOT_ACCEPTABLE).json(err));
+        .catch((err: ResponseReturnType): any => {
+          return resolve(res.status(err.code).json(err));
         });
     });
   }

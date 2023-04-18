@@ -8,7 +8,7 @@ import { EMPTY_EMAIL, EMPTY_EMPLOYEE_ID, EMPTY_GENDER, EMPTY_PASSWORD, EMPTY_PHO
 import { EMPTY_FIRST_NAME, INVALID_EMAIL, INVALID_PHONE } from "../../../resources/strings/app/user";
 import { Expose } from "class-transformer";
 
-@index({ email: 1, phone: 1, empId: 1 }, { unique: true })
+@index({  phone: 1, empId: 1 }, { unique: true })
 @post("save", mongoErrorHandler("users"))
 @post("findOneAndUpdate", mongoErrorHandler("users"))
 class User {
@@ -19,7 +19,7 @@ class User {
   @IsDefined({ groups: ["create"], message: EMPTY_FIRST_NAME })
   public name?: string;
 
-  @prop({ required: true, unique: true })
+  @prop({ required: true })
   @IsDefined({ groups: ["create"], message: EMPTY_EMAIL })
   @IsEmail({}, { always: true, message: INVALID_EMAIL })
   public email?: string;

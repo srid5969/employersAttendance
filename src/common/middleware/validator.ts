@@ -4,6 +4,7 @@ import { Validator as ModelValidator } from "class-validator";
 import { ValidationException, InternalServerException } from "@leapjs/common";
 
 function parse(errors: any): any {
+    
   if (errors.constraints !== undefined) {
     return new ValidationException("Validation Error", Object.values(errors.constraints).reverse());
   }

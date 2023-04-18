@@ -5,7 +5,7 @@ import { HttpStatus, inject } from "@leapjs/common";
 import { User } from "../model/User";
 import validate from "../../../common/middleware/validator";
 import Authentication from "./../../../common/middleware/auth";
-import { ResponseReturnType } from "common/response/responce.type";
+import { ResponseReturnType } from "./../../../../../common/response/responce.type";
 
 @Controller("/user")
 export class UserController {
@@ -15,9 +15,9 @@ export class UserController {
   public async login(@Body() req: any, @Res() res: Response): Promise<Response> {
     try {
       const data = await this.userService.login(req.phone, req.password);
-      return data.status ? res.status(data.status).json(data) : res.status(HttpStatus.ACCEPTED).send(data);
+      return data.status ? res.status(data.code).json(data) : res.status(HttpStatus.ACCEPTED).send(data);
     } catch (error: any) {
-      return error.status ? res.status(error.status).json(error) : res.status(HttpStatus.CONFLICT).send(error);
+      return error.status ? res.status(error.code).json(error) : res.status(HttpStatus.CONFLICT).send(error);
     }
   }
   @Get("/get/:id")

@@ -21,7 +21,7 @@ class AttendanceService {
   }
 
   public async postOutTimeAttendance(employee: any, data: any): Promise<any> {
-    const updateAttendance = await attendance.findOneAndUpdateOne({ employee }, data );
+    const updateAttendance = await attendance.findOneAndUpdateOne({ employee }, data);
     return updateAttendance;
   }
 

@@ -1,6 +1,6 @@
 import { HttpStatus, inject, injectable } from "@leapjs/common";
 import bcrypt from "bcrypt";
-import { ResponseReturnType } from "common/response/responce.type";
+import { ResponseReturnType } from "common/response/response.type";
 import { AuthService } from "../../../common/services/auth";
 import { User, UserModel } from "../model/User";
 import { TokenModel } from "./../../userSession/model/usersToken";
@@ -75,7 +75,7 @@ export class UserService {
             data: saveToken,
             error: null,
             message: "Success",
-            status: false
+            status: true
           };
           return resolve(res);
         } else {

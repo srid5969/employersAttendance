@@ -1,6 +1,6 @@
 import { HttpStatus, inject, injectable } from "@leapjs/common";
 import bcrypt from "bcrypt";
-import { ResponseMessage, ResponseReturnType } from "../../../common/response/response.type";
+import { ResponseMessage, ResponseReturnType } from "../../../common/response/response.types";
 import { AuthService } from "../../../common/services/auth";
 import { User, UserModel } from "../model/User";
 import { TokenModel } from "./../../userSession/model/usersToken";

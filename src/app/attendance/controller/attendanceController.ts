@@ -4,7 +4,9 @@ import validate from "./../../../common/middleware/validator";
 import { Response } from "express";
 import { Attendance } from "../model/attendance";
 import { AttendanceService } from "../service/attendanceService";
+import Authentication from "./../../../common/middleware/auth";
 
+@UseBefore(Authentication)
 @Controller("/attendance")
 export class AttendanceController {
   @inject(AttendanceService)
@@ -25,7 +27,7 @@ export class AttendanceController {
   @Post("/checkOut/:id")
   @UseBefore(validate(Attendance, ["checkOut"]))
   public async checkOutTimeAttendance(@Param("id") id: any, @Body() req: any, @Res() res: Response): Promise<Response> {
-    let data =await this.attendanceService.postOutTimeAttendance(req.employeeId, req);
+    let data = await this.attendanceService.postOutTimeAttendance(req.employeeId, req);
     return res.send(data);
   }
 
@@ -33,7 +35,6 @@ export class AttendanceController {
   public async getAllAttendance(@Req() req: Request, @Res() res: Response): Promise<Response> {
     return res.send("");
   }
-
 
   @Get("/date/:date")
   public async getAttendanceByDate(@Param("date") date: any, @Res() res: Response): Promise<Response> {

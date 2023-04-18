@@ -5,7 +5,7 @@ import { HttpStatus, inject } from "@leapjs/common";
 import { User } from "../model/User";
 import validate from "../../../common/middleware/validator";
 import Authentication from "./../../../common/middleware/auth";
-import { ResponseReturnType } from "./../../../../../common/response/responce.type";
+import { ResponseReturnType } from "../../../common/response/response.types";
 
 @Controller("/user")
 export class UserController {

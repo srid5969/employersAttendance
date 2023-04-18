@@ -1,3 +1,5 @@
+import morgan from "morgan";
+
 import "reflect-metadata";
 import { acFilterAttributes } from "@leapjs/access-control";
 import { Logger } from "@leapjs/common";
@@ -8,7 +10,7 @@ import { json } from "express-mung";
 import helmet from "helmet";
 import { AttendanceController } from "./app/attendance/controller/attendanceController";
 import ErrorHandler from "./common/Handle-Error/error-handler";
-import { configurations } from "./configuration/maanger";
+import { configurations } from "./configuration/manager";
 import { UserController } from "./app/users/controller/UserController";
 
 const port = configurations.port;
@@ -16,7 +18,6 @@ const application: LeapApplication = new LeapApplication();
 mongoose.connect(configurations.mongodbHostName || "", {
   dbName: configurations.dataBaseName || ""
 });
-
 
 const database = mongoose.connection;
 database.on("error", error => console.error());
@@ -31,7 +32,6 @@ const server = application.create(new ExpressAdapter(), {
   controllers: [UserController, AttendanceController],
   afterMiddlewares: [ErrorHandler]
 });
-
 server.listen(port, () => {
   Logger.log(`⚡️[server]: Server is running at http://localhost:${port}`, "NODE Server");
 });

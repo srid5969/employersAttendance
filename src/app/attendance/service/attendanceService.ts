@@ -119,14 +119,26 @@ class AttendanceService {
   public async getAttendanceByDate(data: string = "2001-01-01"): Promise<ResponseReturnType> {
     const date = new Date(data).toISOString();
     const result = await attendance.find({ date: date });
-    return await result;
+    return {
+      code: HttpStatus.FOUND,
+      data: result,
+      error: null,
+      message: "Success",
+      status: true
+    } as ResponseReturnType;
   }
 
   public async getAttendanceByFromDateAndToDate(fromString: string = "2001-01-01", toString: string = "2001-01-01"): Promise<ResponseReturnType> {
     const from = new Date(fromString).toISOString();
     const to = new Date(toString).toISOString();
     const result = await attendance.find({ date: { $gte: from, $lte: to } });
-    return result;
+    return {
+      code: HttpStatus.FOUND,
+      data: result,
+      error: null,
+      message: "Success",
+      status: true
+    } as ResponseReturnType;
   }
 }
 export { AttendanceService };

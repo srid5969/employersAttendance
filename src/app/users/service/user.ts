@@ -59,7 +59,7 @@ export class UserService {
         };
         return resolve(res);
       }
-      const data: any | User = await UserModel.findOne({ phone: phone }, { password: 1 });
+      const data: any | User = await UserModel.findOne({ phone: phone }, { password: 1, name: 1, email: 1, phone: 1, empId: 1, gender: 1, birthDate: 1 });
 
       if (data) {
         /**

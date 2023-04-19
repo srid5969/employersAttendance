@@ -28,40 +28,84 @@ class AttendanceService {
     } as ResponseReturnType;
   }
 
-  public async editAttendance(employee: string, date: string, data: Attendance) {
-    const change = await attendance.findOneAndUpdateOne({ date, employee }, data);
-    return await change;
+  public async editAttendance(employee: string, date: string, data: Attendance): Promise<ResponseReturnType> {
+    try {
+      const change = await attendance.findOneAndUpdateOne({ date, employee }, data);
+      return {
+        code: HttpStatus.ACCEPTED,
+        data: change,
+        error: null,
+        message: "Successfully modified",
+        status: true
+      } as ResponseReturnType;
+    } catch (error) {
+      return {
+        code: HttpStatus.CONFLICT,
+        data: null,
+        error: error,
+        message: "Unable to modify the document ",
+        status: false
+      } as ResponseReturnType;
+    }
   }
 
-  public async postInTimeAttendance(employee: any, data: any): Promise<any> {
+  public async postInTimeAttendance(employee: any, data: any): Promise<ResponseReturnType> {
     try {
       data.employee = employee;
       const registerAttendance = new attendance(data);
       const saveData = await registerAttendance.save();
-      return saveData;
+      return {
+        code: HttpStatus.CREATED,
+        data: saveData,
+        error: null,
+        message: "Successfully added in time of the user ",
+        status: true
+      } as ResponseReturnType;
     } catch (error) {
-      return error;
+      return {
+        code: HttpStatus.CONFLICT,
+        data: null,
+        error: error,
+        message: "Unable to save the document ",
+        status: false
+      } as ResponseReturnType;
     }
   }
 
-  public async postOutTimeAttendance(employee: any, data: any): Promise<any> {
-    const todaysDate = moment().format("YYYY-MM-DD");
-    const updateAttendance = await attendance.findOneAndUpdate({ employee, date: todaysDate }, data);
-    return await updateAttendance;
+  public async postOutTimeAttendance(employee: any, data: Attendance): Promise<ResponseReturnType> {
+    try {
+      const todaysDate = moment().format("YYYY-MM-DD");
+      const updateAttendance = await attendance.findOneAndUpdate({ employee, date: todaysDate }, data);
+      return {
+        code: HttpStatus.CREATED,
+        data: updateAttendance,
+        error: null,
+        message: "Successfully added employees " + employee + " out time",
+        status: true
+      } as ResponseReturnType;
+    } catch (error) {
+      return {
+        code: HttpStatus.CONFLICT,
+        data: null,
+        error: error,
+        message: "Unable to add out time of the employee " + employee,
+        status: false
+      } as ResponseReturnType;
+    }
   }
 
-  public async getAttendanceOfAEmployee(id: any): Promise<any> {
+  public async getAttendanceOfAEmployee(id: any): Promise<ResponseReturnType> {
     const data = await attendance.find({ employee: id });
     return await data;
   }
 
-  public async getAttendanceByDate(data: string = "02/09/2001") {
+  public async getAttendanceByDate(data: string = "2001-01-01"): Promise<ResponseReturnType> {
     const date = new Date(data).toISOString();
     const result = await attendance.find({ date: date });
     return await result;
   }
 
-  public async getAttendanceByFromDateAndToDate(fromString: string = "02/09/2001", toString: string = "02/09/2001") {
+  public async getAttendanceByFromDateAndToDate(fromString: string = "2001-01-01", toString: string = "2001-01-01"): Promise<ResponseReturnType> {
     const from = new Date(fromString).toISOString();
     const to = new Date(toString).toISOString();
     const result = await attendance.find({ date: { $gte: from, $lte: to } });

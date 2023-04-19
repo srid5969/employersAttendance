@@ -95,8 +95,25 @@ class AttendanceService {
   }
 
   public async getAttendanceOfAEmployee(id: any): Promise<ResponseReturnType> {
-    const data = await attendance.find({ employee: id });
-    return await data;
+    try {
+      const data = await attendance.find({ employee: id });
+
+      return {
+        code: HttpStatus.FOUND,
+        data: data,
+        error: null,
+        message: "Success",
+        status: true
+      } as ResponseReturnType;
+    } catch (error) {
+      return {
+        code: HttpStatus.NOT_FOUND,
+        data: null,
+        error: error,
+        message: "Error occurred",
+        status: true
+      } as ResponseReturnType;
+    }
   }
 
   public async getAttendanceByDate(data: string = "2001-01-01"): Promise<ResponseReturnType> {

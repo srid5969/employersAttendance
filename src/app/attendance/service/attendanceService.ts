@@ -9,6 +9,7 @@ class AttendanceService {
     from = moment(from).format("YYYY-MM-DD");
 
     const result = await attendance.find({ employee, date: { $gte: from, $lte: to } });
+
     if (!result || !result[0]) {
       return {
         code: HttpStatus.EXPECTATION_FAILED,
@@ -52,6 +53,8 @@ class AttendanceService {
   public async postInTimeAttendance(employee: any, data: any): Promise<ResponseReturnType> {
     try {
       data.employee = employee;
+      data.date = await moment(data.date).format("YYYY-MM-DD");
+
       const registerAttendance = new attendance(data);
       const saveData = await registerAttendance.save();
       return {
@@ -72,10 +75,10 @@ class AttendanceService {
     }
   }
 
-  public async postOutTimeAttendance(employee: any, data: Attendance): Promise<ResponseReturnType> {
+  public async postOutTimeAttendance(employee: string, date: any, data: Attendance): Promise<ResponseReturnType> {
     try {
-      const todaysDate = moment().format("YYYY-MM-DD");
-      const updateAttendance = await attendance.findOneAndUpdate({ employee, date: todaysDate }, data);
+      if (date) date = await moment().format("YYYY-MM-DD");
+      const updateAttendance = await attendance.findOneAndUpdate({ employee, date }, { data });
       return {
         code: HttpStatus.CREATED,
         data: updateAttendance,
@@ -116,8 +119,7 @@ class AttendanceService {
     }
   }
 
-  public async getAttendanceByDate(data: string = "2001-01-01"): Promise<ResponseReturnType> {
-    const date = new Date(data).toISOString();
+  public async getAttendanceByDate(date: Date ): Promise<ResponseReturnType> {
     const result = await attendance.find({ date: date });
     return {
       code: HttpStatus.FOUND,

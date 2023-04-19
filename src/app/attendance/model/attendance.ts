@@ -43,7 +43,7 @@ class Attendance {
 
 const AttendanceModel: ReturnModelType<typeof Attendance, any> = getModelForClass(Attendance, {
   schemaOptions: {
-    collection: "attendance",
+    collection: "Attendance",
     versionKey: false,
     timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" }
   }

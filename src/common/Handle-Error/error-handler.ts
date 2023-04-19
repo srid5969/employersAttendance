@@ -12,6 +12,9 @@ class ErrorHandler {
     if (error === undefined) {
       return next();
     }
+    if (error.code && error.message && error.error) {
+      return res.status(error.code).json(error);
+    }
 
     if (error.statusCode !== undefined && error.message !== undefined) {
       error = new HttpException(error.statusCode, error.message);

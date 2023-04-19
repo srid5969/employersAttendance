@@ -26,13 +26,13 @@ function validate(classType: any, groups?: string[]): RequestHandler {
       })
       .then((errors: any): any => {
         if (errors.length > 0) {
-          let err = parse(errors[0]).errors;
+          let err = parse(errors[0]);
           const res: ResponseReturnType = {
-            message: err,
-            code: HttpStatus.UNPROCESSABLE_ENTITY,
+            message: err.message,
+            code: err.status || HttpStatus.UNPROCESSABLE_ENTITY,
             status: false,
             data: null,
-            error: err
+            error: err.errors
           };
           return next(res);
         }

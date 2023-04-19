@@ -110,4 +110,26 @@ export class UserService {
   public async getAllUsers() {
     return UserModel.find({});
   }
+  public async logout(bearerToken: string): Promise<ResponseReturnType> {
+    try {
+      const token: string = bearerToken.split(" ")[1];
+
+      const deletedToken = await TokenModel.findOneAndUpdate({ token }, { token: "", expired: true });
+      return {
+        code: HttpStatus.OK,
+        data: deletedToken,
+        error: null,
+        message: "logged out successfully",
+        status: true
+      };
+    } catch (error) {
+      return {
+        code: HttpStatus.CONFLICT,
+        data: null,
+        error,
+        message: "something went wrong",
+        status: false
+      };
+    }
+  }
 }

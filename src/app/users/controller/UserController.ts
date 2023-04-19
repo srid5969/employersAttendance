@@ -13,7 +13,7 @@ export class UserController {
 
   @Post("/logout")
   public async logout(@Header("authorization") token: string, @Res() res: Response): Promise<Response> {
-    return res.send(token);
+    return res.send(await this.userService.logout(token));
   }
 
   @Post("/login")

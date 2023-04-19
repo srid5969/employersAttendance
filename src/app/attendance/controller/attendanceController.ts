@@ -1,4 +1,4 @@
-import { inject } from "@leapjs/common";
+import { HttpStatus, inject } from "@leapjs/common";
 import { Body, Controller, Get, Param, Patch, Post, QueryParam, Req, Res, UseBefore } from "@leapjs/router";
 import validate from "./../../../common/middleware/validator";
 import { Response } from "express";
@@ -11,6 +11,16 @@ import Authentication from "./../../../common/middleware/auth";
 export class AttendanceController {
   @inject(AttendanceService)
   private readonly attendanceService!: AttendanceService;
+
+  @Get("/employee")
+  public async getAttendanceOfAEmployeeByFromAndToDate(@QueryParam("id") id: string, @QueryParam("from") from: string, @QueryParam("to") to: string, @Res() res: Response) {
+    try {
+      const data = await this.attendanceService.getAttendanceOfAEmployeeByFromAndToDate(id, from, to);
+      return data.status ? res.status(data.code).json(data) : res.status(HttpStatus.ACCEPTED).send(data);
+    } catch (error: any) {
+      return error.status ? res.status(error.code).json(error) : res.status(HttpStatus.CONFLICT).send(error);
+    }
+  }
 
   @Get("/employee/:id")
   public async getAttendanceOfAEmployee(@Param("id") id: any, @Res() res: Response): Promise<Response> {

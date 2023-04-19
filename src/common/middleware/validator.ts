@@ -1,10 +1,10 @@
 import { plainToClass } from "class-transformer";
 import { Request, Response, NextFunction, RequestHandler } from "express";
 import { Validator as ModelValidator } from "class-validator";
-import { ValidationException, InternalServerException } from "@leapjs/common";
+import { ValidationException, InternalServerException, HttpStatus } from "@leapjs/common";
+import { ResponseReturnType } from "common/response/response.types";
 
 function parse(errors: any): any {
-    
   if (errors.constraints !== undefined) {
     return new ValidationException("Validation Error", Object.values(errors.constraints).reverse());
   }
@@ -26,7 +26,15 @@ function validate(classType: any, groups?: string[]): RequestHandler {
       })
       .then((errors: any): any => {
         if (errors.length > 0) {
-          return next(parse(errors[0]));
+          let err = parse(errors[0]).errors;
+          const res: ResponseReturnType = {
+            message: err,
+            code: HttpStatus.UNPROCESSABLE_ENTITY,
+            status: false,
+            data: null,
+            error: err
+          };
+          return next(res);
         }
         req.body = input;
         return next();

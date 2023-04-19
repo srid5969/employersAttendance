@@ -4,9 +4,9 @@ import validate from "./../../../common/middleware/validator";
 import { Response } from "express";
 import { Attendance } from "../model/attendance";
 import { AttendanceService } from "../service/attendanceService";
-// import Authentication from "./../../../common/middleware/auth";
+import Authentication from "./../../../common/middleware/auth";
 
-// @UseBefore(Authentication)
+@UseBefore(Authentication)
 @Controller("/attendance")
 export class AttendanceController {
   @inject(AttendanceService)

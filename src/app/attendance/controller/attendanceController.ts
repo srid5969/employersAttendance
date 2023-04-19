@@ -4,16 +4,16 @@ import validate from "./../../../common/middleware/validator";
 import { Response } from "express";
 import { Attendance } from "../model/attendance";
 import { AttendanceService } from "../service/attendanceService";
-import Authentication from "./../../../common/middleware/auth";
+// import Authentication from "./../../../common/middleware/auth";
 
-@UseBefore(Authentication)
+// @UseBefore(Authentication)
 @Controller("/attendance")
 export class AttendanceController {
   @inject(AttendanceService)
   private readonly attendanceService!: AttendanceService;
 
   @Get("/employee")
-  public async getAttendanceOfAEmployeeByFromAndToDate(@QueryParam("id") id: string, @QueryParam("from") from: string, @QueryParam("to") to: string, @Res() res: Response) {
+  public async getAttendanceOfAEmployeeByFromAndToDate(@QueryParam("id") id: string, @QueryParam("from") from: string, @QueryParam("to") to: string, @Res() res: Response):Promise<Response>  {
     try {
       const data = await this.attendanceService.getAttendanceOfAEmployeeByFromAndToDate(id, from, to);
       return data.status ? res.status(data.code).json(data) : res.status(HttpStatus.ACCEPTED).send(data);
@@ -38,6 +38,8 @@ export class AttendanceController {
   @UseBefore(validate(Attendance, ["checkOut"]))
   public async checkOutTimeAttendance(@Param("id") id: any, @Body() req: any, @Res() res: Response): Promise<Response> {
     let data = await this.attendanceService.postOutTimeAttendance(req.employeeId, req);
+    console.log(data);
+    
     return res.send(data);
   }
 

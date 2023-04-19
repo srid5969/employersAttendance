@@ -46,7 +46,7 @@ class AttendanceService {
 
   public async postOutTimeAttendance(employee: any, data: any): Promise<any> {
     const todaysDate = moment().format("YYYY-MM-DD");
-    const updateAttendance = await attendance.findOneAndUpdateOne({ employee, date: todaysDate }, data);
+    const updateAttendance = await attendance.findOneAndUpdate({ employee, date: todaysDate }, data);
     return await updateAttendance;
   }
 

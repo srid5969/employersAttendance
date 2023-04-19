@@ -12,7 +12,7 @@ class Authentication {
 
     let token: any = req.headers.authorization.split(" ") || "";
     if (token[1]) {
-      const data = TokenModel.findOne({ token: token[1] });
+      const data = TokenModel.findOne({ token: token[1] ,expired:false});
       if (data) {
         return next();
       }

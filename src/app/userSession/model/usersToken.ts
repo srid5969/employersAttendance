@@ -14,6 +14,9 @@ class UsersToken {
   @prop()
   @IsDefined({ groups: ["create"] })
   public token!: string;
+
+  @prop({ default: false })
+  public expired: boolean = false;
 }
 
 const TokenModel = getModelForClass(UsersToken, {

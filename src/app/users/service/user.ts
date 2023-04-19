@@ -97,10 +97,10 @@ export class UserService {
         }
       } else {
         const res: ResponseReturnType = {
-          code: HttpStatus.CONFLICT,
+          code: HttpStatus.NOT_FOUND,
           data: null,
-          error: "Bad Request",
-          message: "Bad Request",
+          error: "User cannot be found",
+          message: "User cannot be found",
           status: false
         };
         return resolve(res);

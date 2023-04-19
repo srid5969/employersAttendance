@@ -1,8 +1,8 @@
-import { getModelForClass, prop, Ref, ReturnModelType } from "@typegoose/typegoose";
-import { IsDefined } from "class-validator";
+import { getModelForClass, index, prop, Ref, ReturnModelType } from "@typegoose/typegoose";
+import { IsDateString, IsDefined } from "class-validator";
 import { ObjectId } from "mongodb";
 import { User } from "../../users/model/User";
-import { ENTER_IN_TIME, ENTER_IN_TIME_LOCATION, ENTER_OUT_TIME, ENTER_OUT_TIME_LOCATION } from "../../../resources/strings/app/attendance";
+import { ENTER_IN_TIME, ENTER_IN_TIME_LOCATION, ENTER_IN_VALID_DATE, ENTER_OUT_TIME, ENTER_OUT_TIME_LOCATION } from "../../../resources/strings/app/attendance";
 
 export class Location {
   @prop()
@@ -12,6 +12,7 @@ export class Location {
   public longitude: any;
 }
 
+@index({ date: 1 }, { unique: true })
 class Attendance {
   @prop({ _id: true })
   public id!: ObjectId;
@@ -19,7 +20,8 @@ class Attendance {
   @prop({ Ref: User, required: true })
   public employee!: Ref<User>;
 
-  @prop({ default: Date.now() })
+  @prop({ default: Date.now(), unique: true })
+  @IsDateString({}, { groups: ["update", "checkIn", "checkOut", "create"], message: ENTER_IN_VALID_DATE })
   public date!: string;
 
   @prop({ default: Date.now() })

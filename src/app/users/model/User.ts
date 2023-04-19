@@ -1,14 +1,14 @@
 import { mongoErrorHandler } from "@leapjs/common";
 import { getModelForClass, index, post, prop } from "@typegoose/typegoose";
-import { IsDefined, IsEmail, IsEnum, IsPhoneNumber } from "class-validator";
-import { ObjectId } from "mongodb";
-import { INVALID_GENDER, INVALID_NAME } from "../../../resources/strings/app/role";
-import { Gender, Roles } from "../../../common/constants";
-import { EMPTY_EMAIL, EMPTY_EMPLOYEE_ID, EMPTY_GENDER, EMPTY_PASSWORD, EMPTY_PHONE } from "../../../resources/strings/app/auth";
-import { EMPTY_FIRST_NAME, INVALID_EMAIL, INVALID_PHONE } from "../../../resources/strings/app/user";
 import { Expose } from "class-transformer";
+import { IsDateString, IsDefined, IsEmail, IsEnum, IsPhoneNumber } from "class-validator";
+import { ObjectId } from "mongodb";
+import { Gender, Roles } from "../../../common/constants";
+import { EMPTY_DOB, EMPTY_EMAIL, EMPTY_EMPLOYEE_ID, EMPTY_GENDER, EMPTY_PASSWORD, EMPTY_PHONE } from "../../../resources/strings/app/auth";
+import { INVALID_GENDER, INVALID_NAME } from "../../../resources/strings/app/role";
+import { EMPTY_FIRST_NAME, ENTER_VALID_DOB, INVALID_EMAIL, INVALID_PHONE } from "../../../resources/strings/app/user";
 
-@index({  phone: 1, empId: 1 }, { unique: true })
+@index({ phone: 1, empId: 1 }, { unique: true })
 @post("save", mongoErrorHandler("users"))
 @post("findOneAndUpdate", mongoErrorHandler("users"))
 class User {
@@ -51,6 +51,8 @@ class User {
   public gender!: string;
 
   @prop({ required: true })
+  @IsDefined({ groups: ["create"], message: EMPTY_DOB })
+  @IsDateString({},{ groups: ["create", "update"], message: ENTER_VALID_DOB })
   public birthDate!: string;
 }
 

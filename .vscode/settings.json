@@ -1,4 +1,6 @@
 {
+  "search.useIgnoreFiles": false,
+  "search.useGlobalIgnoreFiles": false,
   "editor.formatOnSave": true,
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"

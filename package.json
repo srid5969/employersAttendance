@@ -19,7 +19,6 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@leapjs/access-control": "^0.5.38",
     "@leapjs/common": "^0.5.38",
     "@leapjs/core": "^0.5.38",
     "@leapjs/messaging": "^0.5.38",

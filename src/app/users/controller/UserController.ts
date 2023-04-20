@@ -13,7 +13,14 @@ export class UserController {
 
   @Post("/logout")
   public async logout(@Header("authorization") token: string, @Res() res: Response): Promise<Response> {
-    return res.send(await this.userService.logout(token));
+    try {
+        
+        const data =await this.userService.logout(token);
+        return data.code ? res.status(data.code).json(data) : res.status(HttpStatus.ACCEPTED).send(data);
+
+    } catch (error: any) {
+        return error.status ? res.status(error.code).json(error) : res.status(HttpStatus.CONFLICT).send(error);
+      }
   }
 
   @Post("/login")

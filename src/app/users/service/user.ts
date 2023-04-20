@@ -127,7 +127,7 @@ export class UserService {
       };
     } catch (error) {
       return {
-        code: HttpStatus.CONFLICT,
+        code: HttpStatus.UNAUTHORIZED,
         data: null,
         error,
         message: "something went wrong",

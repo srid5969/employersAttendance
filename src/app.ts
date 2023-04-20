@@ -1,12 +1,9 @@
-import morgan from "morgan";
-
 import "reflect-metadata";
-import { acFilterAttributes } from "@leapjs/access-control";
+import morgan from "morgan";
 import { Logger } from "@leapjs/common";
 import { LeapApplication } from "@leapjs/core";
 import { ExpressAdapter } from "@leapjs/router";
 import { mongoose } from "@typegoose/typegoose";
-import { json } from "express-mung";
 import helmet from "helmet";
 import { AttendanceController } from "./app/attendance/controller/attendanceController";
 import ErrorHandler from "./common/Handle-Error/error-handler";
@@ -28,7 +25,7 @@ const server = application.create(new ExpressAdapter(), {
     origin: "*",
     credentials: true
   },
-  beforeMiddlewares: [helmet(), json(acFilterAttributes)],
+  beforeMiddlewares: [helmet(), morgan("combined")],
   controllers: [UserController, AttendanceController],
   afterMiddlewares: [ErrorHandler]
 });

@@ -75,10 +75,10 @@ class AttendanceService {
     }
   }
 
-  public async postOutTimeAttendance(employee: string, date: any, data: Attendance): Promise<ResponseReturnType> {
+  public async postOutTimeAttendance(employee: string, date: any, data: any): Promise<ResponseReturnType> {
     try {
-      if (date) date = await moment().format("YYYY-MM-DD");
-      const updateAttendance = await attendance.findOneAndUpdate({ employee, date }, { data });
+    //   if (!date) date = await moment().format("YYYY-MM-DD");
+      const updateAttendance = await attendance.updateOne({ employee, date }, data);
       return {
         code: HttpStatus.CREATED,
         data: updateAttendance,

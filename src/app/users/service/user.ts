@@ -1,4 +1,4 @@
-import { HttpStatus, inject, injectable } from "@leapjs/common";
+import { ConflictException, HttpStatus, inject, injectable } from "@leapjs/common";
 import bcrypt from "bcrypt";
 import { ResponseMessage, ResponseReturnType } from "../../../common/response/response.types";
 import { AuthService } from "../../../common/services/auth";
@@ -114,12 +114,15 @@ export class UserService {
     try {
       const token: string = bearerToken.split(" ")[1];
 
-      const deletedToken = await TokenModel.findOneAndUpdate({ token }, { token: "", expired: true });
+      const deletedToken = await TokenModel.updateOne({ token }, { token: "", expired: true });
+      if (deletedToken.modifiedCount == 0) {
+        throw new ConflictException("cannot modify", "this token has been expired already");
+      }
       return {
         code: HttpStatus.OK,
-        data: deletedToken,
+        data: "Thank you",
         error: null,
-        message: "logged out successfully",
+        message: "Successfully logged out",
         status: true
       };
     } catch (error) {

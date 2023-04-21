@@ -1,12 +1,12 @@
 import { mongoErrorHandler } from "@leapjs/common";
 import { getModelForClass, index, post, prop } from "@typegoose/typegoose";
 import { Expose } from "class-transformer";
-import { IsDateString, IsDefined, IsEmail, IsEnum, IsNumberString, IsPhoneNumber } from "class-validator";
+import { IsAlpha, IsDateString, IsDefined, IsEmail, IsEnum, IsNumberString, IsPhoneNumber } from "class-validator";
 import { ObjectId } from "mongodb";
 import { Gender, Roles } from "../../../common/constants";
 import { EMPTY_DOB, EMPTY_EMAIL, EMPTY_EMPLOYEE_ID, EMPTY_GENDER, EMPTY_PASSWORD, EMPTY_PHONE, INVALID_EMPLOYEE_ID } from "../../../resources/strings/app/auth";
 import { INVALID_GENDER, INVALID_NAME } from "../../../resources/strings/app/role";
-import { EMPTY_FIRST_NAME, ENTER_VALID_DOB, INVALID_EMAIL, INVALID_PHONE } from "../../../resources/strings/app/user";
+import { EMPTY_FIRST_NAME, ENTER_VALID_DOB, INVALID_EMAIL, INVALID_FIRST_NAME, INVALID_PHONE } from "../../../resources/strings/app/user";
 
 @index({ phone: 1, empId: 1 }, { unique: true })
 @post("save", mongoErrorHandler("users"))
@@ -16,6 +16,7 @@ class User {
   public id?: ObjectId;
 
   @prop({ required: true })
+  @IsAlpha("en-US", { groups: ["create"], message: INVALID_FIRST_NAME })
   @IsDefined({ groups: ["create"], message: EMPTY_FIRST_NAME })
   public name?: string;
 
@@ -25,12 +26,12 @@ class User {
   public email?: string;
 
   @prop({ required: true, unique: true })
-  @IsDefined({ groups: ["create","login"], message: EMPTY_PHONE })
+  @IsDefined({ groups: ["create", "login"], message: EMPTY_PHONE })
   @IsPhoneNumber("IN", { always: true, message: INVALID_PHONE })
   public phone!: number;
 
   @prop({ required: true, allowMixed: 0, select: false })
-  @IsDefined({ groups: ["create","login"], message: EMPTY_PASSWORD })
+  @IsDefined({ groups: ["create", "login"], message: EMPTY_PASSWORD })
   public password!: string;
 
   @prop({ required: true, default: Roles.Employee })
@@ -40,7 +41,7 @@ class User {
 
   @prop({ required: true, unique: true })
   @IsDefined({ groups: ["create"], message: EMPTY_EMPLOYEE_ID })
-  @IsNumberString({no_symbols:true}, { groups: ["create"], message: INVALID_EMPLOYEE_ID })
+  @IsNumberString({ no_symbols: true }, { groups: ["create"], message: INVALID_EMPLOYEE_ID })
   public empId?: string;
 
   @prop({ required: true, default: true })

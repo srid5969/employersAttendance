@@ -1,5 +1,5 @@
 const EMPTY_FIRST_NAME = "Please provide a first name";
-const INVALID_FIRST_NAME = "First name must be greater than a 1 and less than constraint1 characters";
+const INVALID_FIRST_NAME = "Name does must not contain any special characters or numbers";
 
 const EMPTY_LAST_NAME = "Please provide a last name";
 const INVALID_LAST_NAME = "Last name must be less than constraint1 characters";

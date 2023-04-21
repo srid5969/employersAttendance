@@ -59,7 +59,7 @@ export class UserService {
         };
         return resolve(res);
       }
-      const data: any | User = await UserModel.findOne({ phone: phone }, { password: 1, name: 1, email: 1, phone: 1, empId: 1, gender: 1, birthDate: 1 });
+      const data: User = await UserModel.findOne({ phone: phone }, { password: 1, name: 1, email: 1, phone: 1, empId: 1, gender: 1, birthDate: 1, _id: 0, id: "$_id" });
 
       if (data) {
         /**
@@ -72,14 +72,21 @@ export class UserService {
         const Data = await bcrypt.compare(plainPassword, data.password);
         if (Data) {
           const token = await this.authService.generateToken(JSON.stringify(data));
-          const saveToken = await new TokenModel({
-            user: data._id,
+          await new TokenModel({
+            user: data.id,
             token: token
-          }).save(); //.populate({path:"user"})
-          saveToken.user = data;
+          }).save();
           const res: ResponseReturnType = {
             code: HttpStatus.ACCEPTED,
-            data: saveToken,
+            data: {
+              id: data.id,
+              phone: data.phone,
+              email: data.email,
+              empId: data.empId,
+              gender: data.gender,
+              birthDate: data.birthDate,
+              token
+            },
             error: null,
             message: "Success",
             status: true

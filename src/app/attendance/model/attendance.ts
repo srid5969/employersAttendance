@@ -1,14 +1,16 @@
 import { getModelForClass, index, prop, Ref, ReturnModelType } from "@typegoose/typegoose";
-import { IsDateString, IsDefined } from "class-validator";
+import { IsDateString, IsDefined, IsLatitude, IsLongitude, IsMilitaryTime } from "class-validator";
 import { ObjectId } from "mongodb";
 import { User } from "../../users/model/User";
-import { ENTER_IN_TIME, ENTER_IN_TIME_LOCATION, ENTER_IN_VALID_DATE, ENTER_OUT_TIME, ENTER_OUT_TIME_LOCATION } from "../../../resources/strings/app/attendance";
+import { ENTER_IN_TIME, ENTER_IN_TIME_LOCATION, ENTER_IN_VALID_DATE, ENTER_OUT_TIME, ENTER_OUT_TIME_LOCATION, INVALID_CHECK_IN_TIME, INVALID_CHECK_OUT_TIME } from "../../../resources/strings/app/attendance";
 
 export class Location {
   @prop()
+  @IsLatitude({groups: ["update", "checkIn", "checkOut", "create"]})
   public latitude: any;
 
   @prop()
+  @IsLongitude({groups: ["update", "checkIn", "checkOut", "create"]})
   public longitude: any;
 }
 
@@ -25,6 +27,7 @@ class Attendance {
   public date!: string;
 
   @prop({ default: Date.now() })
+  @IsMilitaryTime({ groups: ["checkIn"], message: INVALID_CHECK_IN_TIME })
   @IsDefined({ groups: ["checkIn"], message: ENTER_IN_TIME })
   public checkInTime!: string;
 
@@ -37,6 +40,7 @@ class Attendance {
   public checkOutLocation!: Ref<Location>;
 
   @prop({})
+  @IsMilitaryTime({ groups: ["checkIn"], message: INVALID_CHECK_OUT_TIME })
   @IsDefined({ groups: ["checkOut"], message: ENTER_OUT_TIME })
   public checkOutTime!: string;
 }

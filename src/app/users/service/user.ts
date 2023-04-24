@@ -121,7 +121,7 @@ export class UserService {
     try {
       const token: string = bearerToken.split(" ")[1];
 
-      const deletedToken = await TokenModel.updateOne({ token }, { token: "", expired: true });
+      const deletedToken = await TokenModel.updateOne({ token ,expired:false}, { token: null, expired: true });
       if (deletedToken.modifiedCount == 0) {
         throw new ConflictException("cannot modify", "this token has been expired already");
       }

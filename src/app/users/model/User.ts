@@ -54,7 +54,7 @@ class User {
 
   @prop({ required: true })
   @IsDefined({ groups: ["create"], message: EMPTY_DOB })
-  @IsDateString({}, { groups: ["create", "update"], message: ENTER_VALID_DOB })
+//   @IsDateString({}, { groups: ["create", "update"], message: ENTER_VALID_DOB })
   public birthDate!: string;
 }
 

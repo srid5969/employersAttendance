@@ -25,7 +25,7 @@ const server = application.create(new ExpressAdapter(), {
     origin: "*",
     credentials: true
   },
-  beforeMiddlewares: [helmet(), morgan("combined")],
+  beforeMiddlewares: [helmet(), morgan("dev")],
   controllers: [UserController, AttendanceController],
   afterMiddlewares: [ErrorHandler]
 });

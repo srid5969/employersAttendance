@@ -7,7 +7,9 @@ import { TokenModel } from "./../../userSession/model/usersToken";
 
 @injectable()
 export class UserService {
-  constructor(@inject(() => AuthService) private readonly authService: AuthService) {}
+  constructor(@inject(() => AuthService) private readonly authService: AuthService) {
+    this.authService = authService;
+  }
 
   public async getUserById(id: any): Promise<ResponseReturnType> {
     const data = await UserModel.findOne({ _id: id });
@@ -79,6 +81,7 @@ export class UserService {
           const res: ResponseReturnType = {
             code: HttpStatus.ACCEPTED,
             data: {
+              name: data.name,
               id: data.id,
               phone: data.phone,
               email: data.email,
@@ -121,7 +124,7 @@ export class UserService {
     try {
       const token: string = bearerToken.split(" ")[1];
 
-      const deletedToken = await TokenModel.updateOne({ token ,expired:false}, { token: null, expired: true });
+      const deletedToken = await TokenModel.updateOne({ token, expired: false }, { token: null, expired: true });
       if (deletedToken.modifiedCount == 0) {
         throw new ConflictException("cannot modify", "this token has been expired already");
       }

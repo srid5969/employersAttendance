@@ -2,6 +2,7 @@ import { HttpStatus, injectable } from "@leapjs/common";
 import { Attendance, AttendanceModel as attendance } from "../model/attendance";
 import { ResponseMessage, ResponseReturnType } from "./../../../common/response/response.types";
 import moment from "moment";
+import { UserModel } from "./../../users/model/User";
 
 @injectable()
 class AttendanceService {
@@ -9,6 +10,7 @@ class AttendanceService {
     from = moment(from).format("YYYY-MM-DD");
 
     const result = await attendance.find({ employee, date: { $gte: from, $lte: to } });
+    console.log("=========================");
 
     if (!result || !result[0]) {
       return {
@@ -77,7 +79,7 @@ class AttendanceService {
 
   public async postOutTimeAttendance(employee: string, date: any, data: any): Promise<ResponseReturnType> {
     try {
-    //   if (!date) date = await moment().format("YYYY-MM-DD");
+      //   if (!date) date = await moment().format("YYYY-MM-DD");
       const updateAttendance = await attendance.updateOne({ employee, date }, data);
       return {
         code: HttpStatus.CREATED,
@@ -119,7 +121,7 @@ class AttendanceService {
     }
   }
 
-  public async getAttendanceByDate(date: Date ): Promise<ResponseReturnType> {
+  public async getAttendanceByDate(date: Date): Promise<ResponseReturnType> {
     const result = await attendance.find({ date: date });
     return {
       code: HttpStatus.FOUND,
@@ -133,7 +135,7 @@ class AttendanceService {
   public async getAttendanceByFromDateAndToDate(fromString: string = "2001-01-01", toString: string = "2001-01-01"): Promise<ResponseReturnType> {
     const from = new Date(fromString).toISOString();
     const to = new Date(toString).toISOString();
-    const result = await attendance.find({ date: { $gte: from, $lte: to } });
+    const result = await attendance.find({ date: { $gte: from, $lte: to } }).populate({ path: "employee", model: UserModel, select: "name" });
     return {
       code: HttpStatus.FOUND,
       data: result,

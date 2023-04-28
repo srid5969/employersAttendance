@@ -8,9 +8,10 @@ export class AuthService {
     if (dotenv.config().error) {
       throw new Error("Cannot find configuration file");
     }
+
     let token = await jwt.sign(userData, process.env.jwtSecretKey || "", {
-      // expiresIn: "7 days",
-      algorithm: "HS256",
+      // expiresIn: 100,
+      algorithm: "HS256"
     });
     return token;
   }

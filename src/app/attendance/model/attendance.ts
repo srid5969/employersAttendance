@@ -1,8 +1,8 @@
-import { getModelForClass, index, prop, Ref, ReturnModelType } from "@typegoose/typegoose";
+import { getModelForClass, prop, Ref, ReturnModelType } from "@typegoose/typegoose";
 import { IsDateString, IsDefined, IsLatitude, IsLongitude, IsMilitaryTime } from "class-validator";
 import { ObjectId } from "mongodb";
-import { User } from "../../users/model/User";
 import { ENTER_IN_TIME, ENTER_IN_TIME_LOCATION, ENTER_IN_VALID_DATE, ENTER_OUT_TIME, ENTER_OUT_TIME_LOCATION, INVALID_CHECK_IN_TIME, INVALID_CHECK_OUT_TIME } from "../../../resources/strings/app/attendance";
+import { User } from "../../users/model/User";
 
 export class Location {
   @prop()
@@ -14,7 +14,6 @@ export class Location {
   public longitude: any;
 }
 
-@index({ date: 1 }, { unique: true })
 class Attendance {
   @prop({ _id: true })
   public id!: ObjectId;
@@ -47,7 +46,7 @@ class Attendance {
 
 const AttendanceModel: ReturnModelType<typeof Attendance, any> = getModelForClass(Attendance, {
   schemaOptions: {
-    collection: "Attendance",
+    collection: "attendance",
     versionKey: false,
     timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" }
   }
